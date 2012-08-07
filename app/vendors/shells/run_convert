@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/var/www/virtual/reklamna-kampan.sk/htdocs/app/vendors/shells/cakeshell convert -cli /usr/bin -console /usr/share/php/cake-1.3.8/cake/console -app /var/www/virtual/reklamna-kampan.sk/htdocs/app
