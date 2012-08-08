@@ -24,7 +24,7 @@ class AppController extends Controller {
 	/**
 	 * @var array App Halpers
 	 */
-	var $helpers = array('Session','Html','Form','Javascript','Text','Navigation');
+	var $helpers = array('Session','Html','Form','Javascript','Text');
 	
 	/**
 	 * beforeFilter
