@@ -3,14 +3,7 @@
 /**
  * MediaFormat Model Class
  * 
- * This is example model for example component. You can used as template for new models. 
- * 
- * Description for models call backs is from cakephp online book.
- * http://book.cakephp.org/view/76/Callback-Methods
- * 
- * More about models:
- * http://book.cakephp.org/view/66/Models
- * http://api13.cakephp.org/class/model
+ * Media formats for screenboxes. One file medium can havediferent sizes or formats. Formats are creted from screenboxes properties.
  * 
  * @author Martin Bucko, Treecom s.r.o. (bucko at treecom dot net)
  * @copyright Copyright 2011 Treecom s.r.o.

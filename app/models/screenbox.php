@@ -1,42 +1,35 @@
 <?php
 
 /**
- * MediaPlaytimeLog Model Class
+ * Screenbox Model Class
  * 
- * This is example model for example component. You can used as template for new models. 
- * 
- * Description for models call backs is from cakephp online book.
- * http://book.cakephp.org/view/76/Callback-Methods
- * 
- * More about models:
- * http://book.cakephp.org/view/66/Models
- * http://api13.cakephp.org/class/model
- * 
+ * Model for Screenbox properties.
+ *
  * @author Martin Bucko, Treecom s.r.o. (bucko at treecom dot net)
  * @copyright Copyright 2011 Treecom s.r.o.
  */
 
-class MediaPlaytimeLog extends AppModel {
+class Screenbox extends AppModel {
 	/**
 	 * @var string model name
 	 */
-	var $name = 'MediaPlaytimeLog';
+	var $name = 'Screenbox';
 	
 	/**
 	 * @var string use this table, required only if have other name as model name in plural 
 	 */
-	var $useTable = 'media_playtime_logs';	
+	// var $useTable = 'examples';	
 
 	/**
 	 * Model display field
 	 * @var string
 	 */
- 	var $displayField = 'media_id';
+ 	var $displayField = 'id';
 	
 	/**
 	 * @var string (or array) The column name(s) and direction(s) to order find results by default.
 	 */
-	var $order = "MediaPlaytimeLog.id DESC"; 
+	var $order = "Screenbox.id DESC"; 
 
 	/**
 	 * @var array validation rules
@@ -47,7 +40,7 @@ class MediaPlaytimeLog extends AppModel {
 	 * @var array Using virtualFields
 	 */
 	var $virtualFields = array(
-    	// 'full' => "CONCAT('<b>', MediaPlaytimeLog.title, '</b><br>', MediaPlaytimeLog.description)"
+    	// 'full' => "CONCAT('<b>', Screenbox.title, '</b><br>', Screenbox.description)"
 	);
 	
 	/**
@@ -55,11 +48,45 @@ class MediaPlaytimeLog extends AppModel {
 	 */
 	var $actsAs = array();
 	
+	
+	var $defaultConfig = array();
+	
 	/**
 	 * Constructor
 	 */
 	function __construct($id = false, $table = null, $ds = null) {
 		 parent::__construct($id, $table, $ds);
+		 
+		 // fill validation rulez with transalated massages
+		 $this->validate = array(
+		 		'width' => array (
+		 			'rule' => 'notEmpty',
+					'required' => true,
+					'massage' => __('This field is required', true)
+				),
+				'height' => array (
+		 			'rule' => 'notEmpty',
+					'required' => true,
+					'massage' => __('This field is required', true)
+				)  
+		 );
+		 
+ 		 $this->defaultConfig = array(
+ 				"volume" => 1,
+ 				"confInterval"=> (1000*30),
+				"plsReload" => (1000*30),				
+				"playlogInterval" => (1000*60),	
+				"ratio"=>false,		 
+				"x" => 0,
+				"y" => 0,				
+				"streamAudio" => false,	
+				"streamAudioVolume" => 1,				
+				"streamAudioUrl" => '',
+ 				"streamAudioProxy" => true,			
+				"loger" => true,
+				"logToAlert" => false,
+				"playerClipTween" => false
+			);
 	} 
 	
 	/**
@@ -68,9 +95,6 @@ class MediaPlaytimeLog extends AppModel {
 	 * @return boolean
 	 */
 	function beforeFind($queryData){
-		// bind users to add item manipulations info
-		// for make better performance is bether to us it in Component only if needed.
-		// $this->bindUsers();
 		return true;
 	}
 	/**
@@ -81,6 +105,9 @@ class MediaPlaytimeLog extends AppModel {
 	 * @return array modified results
 	 */
 	function afterFind($results, $primary){
+		if ($primary && !empty($results[0]['Screenbox']['config'])){
+			$results[0]['Screenbox']['config'] = unserialize($results[0]['Screenbox']['config']);
+		} 	
 		return $results;
 	}
 	
@@ -92,8 +119,8 @@ class MediaPlaytimeLog extends AppModel {
 	function beforeValidate(){
 		// users data to item
 		// see app_model.php
-		// $this->addCUTime();
-		// $this->cleanFields($this, array('title','description'));
+		$this->addCUTime();
+		$this->cleanFields($this, array('key','description'));
 		return true;
 	}
 	
@@ -102,6 +129,25 @@ class MediaPlaytimeLog extends AppModel {
 	 * @return boolean 
 	 */
 	function beforeSave(){
+		// $this->data[$this->name]['key'] = strtoupper(substr(md5(time()), 0, 8));
+		
+		if (!empty($this->data[$this->name]['key'])){
+				$this->data[$this->name]['key'] = strtoupper($this->data[$this->name]['key']);
+				$this->data[$this->name]['key'] = str_replace(':', '', $this->data[$this->name]['key']);
+		}
+		 
+ 		if (empty($this->data[$this->name]['config'])){
+			$this->data[$this->name]['config'] = $this->defaultConfig;
+		}
+		
+		if (!empty($this->data[$this->name]['config'])){
+			if (is_array($this->data[$this->name]['config'])){
+				if (!empty($this->defaultConfig) && is_array($this->defaultConfig)){
+					$this->data[$this->name]['config'] = array_merge($this->defaultConfig, $this->data[$this->name]['config']);
+					$this->data[$this->name]['config'] = serialize($this->data[$this->name]['config']);
+				}
+			}
+		}
 		return true;
 	}
 	
@@ -130,28 +176,17 @@ class MediaPlaytimeLog extends AppModel {
 	function afterDelete(){
 		
 	}
- 
 	
-	function import($data, $box){
-		if (!empty($data)){
-			foreach($data as $line){
-				$line['media_box_id'] = $box;
-				unset($line['sync']);
-				$this->deleteAll($line);
-			 	$this->create();
-			 	$this->save($line, false);
-			}
-			return true;
-		}
-		return false;
-	}
-	
+	function getByCompany($id, $fields = null){
+		return $this->find('all', array('conditions'=>array('Screenbox.company_id'=>intval($id)), 'fields'=>$fields));
+	}	
+
 	/**
 	 * Called if any problems occur.
 	 * Can be used allso for errors loging and etc.
 	 * @return void
 	 */
 	function onError(){
-		LogError('Error in model MediaPlaytimeLog!');
+		LogError('Error in model Screenbox!');
 	}
 }

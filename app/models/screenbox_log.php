@@ -1,42 +1,34 @@
 <?php
 
 /**
- * MediaBoxLog Model Class
+ * ScreenboxLog Model Class
  * 
- * This is example model for example component. You can used as template for new models. 
- * 
- * Description for models call backs is from cakephp online book.
- * http://book.cakephp.org/view/76/Callback-Methods
- * 
- * More about models:
- * http://book.cakephp.org/view/66/Models
- * http://api13.cakephp.org/class/model
+ * Screenbox log model. This model collect statistic from screenboxes. 
  * 
  * @author Martin Bucko, Treecom s.r.o. (bucko at treecom dot net)
  * @copyright Copyright 2011 Treecom s.r.o.
  */
 
-class MediaBoxLog extends AppModel {
+class ScreenboxLog extends AppModel {
 	/**
 	 * @var string model name
 	 */
-	var $name = 'MediaBoxLog';
+	var $name = 'ScreenboxLog';
 	
 	/**
 	 * @var string use this table, required only if have other name as model name in plural 
 	 */
-	 var $useTable = 'media_box_logs';	
+	 var $useTable = 'screenbox_logs';	
 
 	/**
-	 * Model display field
-	 * @var string
+	 * @var string Model display field
 	 */
- 	var $displayField = 'media_box_id';
+ 	var $displayField = 'screenbox_id';
 	
 	/**
 	 * @var string (or array) The column name(s) and direction(s) to order find results by default.
 	 */
-	var $order = "MediaBoxLog.id DESC"; 
+	var $order = "ScreenboxLog.id DESC"; 
 
 	/**
 	 * @var array validation rules
@@ -47,7 +39,7 @@ class MediaBoxLog extends AppModel {
 	 * @var array Using virtualFields
 	 */
 	var $virtualFields = array(
-    	// 'full' => "CONCAT('<b>', MediaBoxLog.title, '</b><br>', MediaBoxLog.description)"
+    	// 'full' => "CONCAT('<b>', ScreenboxLog.title, '</b><br>', ScreenboxLog.description)"
 	);
 	
 	/**
@@ -146,6 +138,6 @@ class MediaBoxLog extends AppModel {
 	 * @return void
 	 */
 	function onError(){
-		LogError('Error in model MediaBoxLog!');
+		LogError('Error in model ScreenboxLog!');
 	}
 }

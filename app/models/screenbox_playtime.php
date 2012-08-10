@@ -1,26 +1,18 @@
 <?php
-
 /**
- * MediaPlaytime Model Class
+ * ScreenboxPlaytime Model Class
  * 
- * This is example model for example component. You can used as template for new models. 
- * 
- * Description for models call backs is from cakephp online book.
- * http://book.cakephp.org/view/76/Callback-Methods
- * 
- * More about models:
- * http://book.cakephp.org/view/66/Models
- * http://api13.cakephp.org/class/model
+ * Model for Screenbox Playtime or playlist.
  * 
  * @author Martin Bucko, Treecom s.r.o. (bucko at treecom dot net)
  * @copyright Copyright 2011 Treecom s.r.o.
  */
 
-class MediaPlaytime extends AppModel {
+class ScreenboxPlaytime extends AppModel {
 	/**
 	 * @var string model name
 	 */
-	var $name = 'MediaPlaytime';
+	var $name = 'ScreenboxPlaytime';
 	
 	/**
 	 * @var string use this table, required only if have other name as model name in plural 
@@ -36,7 +28,7 @@ class MediaPlaytime extends AppModel {
 	/**
 	 * @var string (or array) The column name(s) and direction(s) to order find results by default.
 	 */
-	var $order = "MediaPlaytime.id DESC"; 
+	var $order = "ScreenboxPlaytime.id DESC"; 
 
 	/**
 	 * @var array validation rules
@@ -47,7 +39,7 @@ class MediaPlaytime extends AppModel {
 	 * @var array Using virtualFields
 	 */
 	var $virtualFields = array(
-    	// 'full' => "CONCAT('<b>', MediaPlaytime.title, '</b><br>', MediaPlaytime.description)"
+    	// 'full' => "CONCAT('<b>', ScreenboxPlaytime.title, '</b><br>', ScreenboxPlaytime.description)"
 	);
 	
 	/**
@@ -156,12 +148,12 @@ class MediaPlaytime extends AppModel {
 		if ($media_id>0){
 			$times = $this->find('all',array(
 				'conditions' => array(
-					'MediaPlaytime.media_id' => $media_id
+					'ScreenboxPlaytime.media_id' => $media_id
 				)
 			));
 			
 			foreach((array) $times as $t){
-				$out[] = (intval($t['MediaPlaytime']['time_from'])/100)+1;
+				$out[] = (intval($t['ScreenboxPlaytime']['time_from'])/100)+1;
 			}
 		}
 		return $out;
@@ -173,6 +165,6 @@ class MediaPlaytime extends AppModel {
 	 * @return void
 	 */
 	function onError(){
-		LogError('Error in model MediaPlaytime!');
+		LogError('Error in model ScreenboxPlaytime!');
 	}
 }

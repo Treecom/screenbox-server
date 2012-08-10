@@ -3,14 +3,7 @@
 /**
  * Medias Model Class
  * 
- * This is example model for example component. You can used as template for new models. 
- * 
- * Description for models call backs is from cakephp online book.
- * http://book.cakephp.org/view/76/Callback-Methods
- * 
- * More about models:
- * http://book.cakephp.org/view/66/Models
- * http://api13.cakephp.org/class/model
+ * Model for media properties.
  * 
  * @author Martin Bucko, Treecom s.r.o. (bucko at treecom dot net)
  * @copyright Copyright 2011 Treecom s.r.o.
@@ -139,8 +132,8 @@ class Medias extends AppModel {
 			$id = $this->getLastInsertId();
 		}
 		
-		$MediaBox = Classregistry::init('MediaBox');
-		$MediaPlaytime = Classregistry::init('MediaPlaytime');
+		$MediaBox = Classregistry::init('Screenbox');
+		$MediaPlaytime = Classregistry::init('ScreenboxPlaytime');
 		$Format = Classregistry::init('MediaFormat');
 		$Fs = Classregistry::init('FileStore');
 		
@@ -159,9 +152,9 @@ class Medias extends AppModel {
 			
 			$this->read(null, $id);
 			
-			$boxes = $MediaBox->find('all', array(
+			$boxes = $Screenbox->find('all', array(
 				'conditions' => array(
-					'MediaBox.id' => $bid
+					'Screenbox.id' => $bid
 				),
 				'recursive' => 0,
 				'fields' => array('id','width','height','format')
@@ -174,13 +167,13 @@ class Medias extends AppModel {
 				foreach($boxes as $b){
 					
 					$old = $Format->find('first',array(
-						'conditions'=>array('media_id'=>$id,'media_box_id'=>$b['MediaBox']['id']),
+						'conditions'=>array('media_id'=>$id,'screenbox_id'=>$b['Screenbox']['id']),
 						'fields' => array('id')
 					));
 					
-					$w = $b['MediaBox']['width'];
-					$h = $b['MediaBox']['height'];
-					$formats = $b['MediaBox'];
+					$w = $b['Screenbox']['width'];
+					$h = $b['Screenbox']['height'];
+					$formats = $b['Screenbox'];
 					
 					$formats['file_id'] = $this->data['Medias']['file_id'];
 					$formats['file_name'] = $this->data['FileStore']['file_name'];
@@ -191,7 +184,7 @@ class Medias extends AppModel {
 					
 					if (empty($old['MediaFormat'])){
 						$formats['downloaded'] = 0;
-						$formats['media_box_id'] = $b['MediaBox']['id'];
+						$formats['screenbox_id'] = $b['Screenbox']['id'];
 						$formats['media_id'] = $id;
 						$formats['id'] = null;
 						$Format->create();
@@ -206,7 +199,7 @@ class Medias extends AppModel {
 				}
 				
 				// delete deselected old fromats
-				 $Format->deleteAll(array('media_id'=>$id, 'NOT'=>array('media_box_id'=> $bid)), false);
+				 $Format->deleteAll(array('media_id'=>$id, 'NOT'=>array('screenbox_id'=> $bid)), false);
 				
 			} else {
 				// delete all old formats
@@ -218,8 +211,8 @@ class Medias extends AppModel {
 		if ((!empty($playtimes) || !empty($days)) && $id>0){
 			$pts = explode(',', $playtimes);
 			$days = explode(',', $days);
-			$MediaPlaytime->deleteAll(array('media_id'=>$id));
-			$ptf = $MediaPlaytime->getPlaytimeFormat();
+			$ScreenboxPlaytime->deleteAll(array('media_id'=>$id));
+			$ptf = $ScreenboxPlaytime->getPlaytimeFormat();
 			// @todo: pridat prazdny cas ak bol zadany iba den! tj od 00:00 do 24:00 ~ alebo zohladnit v selete playlistu...
 			
 			if (empty($days)){
@@ -242,7 +235,7 @@ class Medias extends AppModel {
 								'day' => $day
 					);
 					fb($data);
-					$MediaPlaytime->save($data);
+					$ScreenboxPlaytime->save($data);
 				}
 			}
 		}
@@ -258,12 +251,12 @@ class Medias extends AppModel {
 	function beforeDelete($cascade){
 		
 		if ($this->id>0 && $cascade){
-			$MediaPlaytime = Classregistry::init('MediaPlaytime');
-			$MediaPlaytime->deleteAll(array('media_id'=>$this->id), false);
+			$ScreenboxPlaytime = Classregistry::init('ScreenboxPlaytime');
+			$ScreenboxPlaytime->deleteAll(array('media_id'=>$this->id), false);
 			$Format = Classregistry::init('MediaFormat');
 			$Format->deleteAll(array('media_id'=>$this->id), false);
-			$MediaPlaytimeLog = Classregistry::init('MediaPlaytimeLog');
-			$MediaPlaytimeLog->deleteAll(array('media_id'=>$this->id), false);
+			$ScreenboxPlaytimeLog = Classregistry::init('ScreenboxPlaytimeLog');
+			$ScreenboxPlaytimeLog->deleteAll(array('media_id'=>$this->id), false);
 		}
 		
 		return true;
