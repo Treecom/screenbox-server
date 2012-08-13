@@ -1,9 +1,8 @@
-config/database.php
 app/config/database.php
-tmp/cache/css/*
-tmp/cache/models/*
-tmp/cache/persistent/*
-tmp/cache/views/*
-tmp/logs/*
-tmp/sessions/*
+app/tmp/cache/css/*
+app/tmp/cache/models/*
+app/tmp/cache/persistent/*
+app/tmp/cache/views/*
+app/tmp/logs/*
+app/tmp/sessions/*
 !empty
