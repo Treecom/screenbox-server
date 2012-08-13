@@ -6,12 +6,11 @@
  *  User and groups component
  *
  *  @author Martin Bucko (bucko@oneclick.sk)
- *  @copyright Copyright 2009 - OneClick s.r.o., 2010 - 2011 Treecom s.r.o.
- *  @version 1.0.1
- *  @created 2009-06-19
+ *  @copyright Copyright (c) 2012, Treecom s.r.o.  
  */
 
 class UserComponent extends Object {
+
     var $name = "User";
 	var $lockedAcos = array('Controllers','Admin','Context');
 	var $lockedGroups = array('Administrators','Users');
@@ -338,7 +337,8 @@ class UserComponent extends Object {
 			$result = $controller->User->findById($id);
 			if (!empty($result['User'])){
 				unset($result['User']['password']);
-				return array('success'=>true,'data'=>$result['User']);
+				$controller->data = $result;
+				return array('success'=>true,'User'=>$result['User']);
 			} 
 		}
 	}
@@ -349,7 +349,7 @@ class UserComponent extends Object {
 	 * @return array
 	 */
 	function admin_editUser(&$controller){
-			
+/*
 		if (!empty($controller->params['form']['id'])){
 			if (!$controller->isAuthorized('Controllers/Admin/User','update')){
 				return $controller->unAuth();
@@ -359,10 +359,11 @@ class UserComponent extends Object {
 				return $controller->unAuth();
 			}
 		}
+		*/
   		$logout = false;		
 		$out = array('success'=>false);
  		$controller->loadModel('User');
-
+ 		
 		if (empty($controller->params['form']['password']) && empty($controller->params['form']['password2'])){
 			unset($controller->params['form']['password'], $controller->params['form']['password2']);
 		}
@@ -371,8 +372,8 @@ class UserComponent extends Object {
 		// @todo not finished when moved to other group!
 		if (!empty($controller->params['form']['id']) && !empty($controller->params['form']['email'])){
 			if ($controller->params['form']['id']>0){
-				$aro =& $controller->Acl->Aro;
-				$data = $aro->find('first',array('conditions'=>array('foreign_key'=>intval($controller->params['form']['id']))));
+				$aro =& $controller->Acl->Aro;				
+				$data = $aro->find('first',array('conditions'=>array('foreign_key'=>intval($controller->params['form']['id']),'model'=>'User')));
 				if (!empty($data['Aro']['id'])) {    
 					$aro->id = $data['Aro']['id'];
 					if ($aro->save(array('alias' => $controller->params['form']['email']))){
@@ -404,10 +405,11 @@ class UserComponent extends Object {
 	 */
 	function admin_deleteUser(&$controller){
 		
+		/*
 		if (!$controller->isAuthorized('Controllers/Admin/User','delete')){
 			return $controller->unAuth();
 		}
-		
+		*/
 		$out = array('success'=>false);
 		
 		if (!empty($controller->params['form']['id'])){

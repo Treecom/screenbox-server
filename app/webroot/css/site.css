@@ -2,12 +2,29 @@
 
 
 header {
-	margin-top: 50px;
+ 
 }
 
-.brand {
-	color: orange;
+.top {
+	padding-top: 50px;
+}
+
+.logo {
+	color: #FAA732 !important;
 }
 .icon {
  
+}
+
+.right {
+	text-align: right;
+}
+
+.error-message {
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.input {
+	margin-bottom: 5px;
 }

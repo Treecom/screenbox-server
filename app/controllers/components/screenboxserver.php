@@ -1,11 +1,11 @@
 <?php 
 /**
- *  Mediaserver component
+ *  Screenboxserver component
  *
+ *  Screen box server component for controller.
  *
- *  @author Martin Bucko (bucko at treecom dot net)
- *  @copyright Copyright 2010 - 2011 Treecom s.r.o.
- *  @version 1.0
+ *  @author Martin Bucko, Treeecom s.r.o.
+ *  @copyright Copyright (c) 2011-2012 Treecom s.r.o.
  *  @created 11.10.2011
  */
  
@@ -13,17 +13,17 @@ ignore_user_abort(true);
 set_time_limit(1800);
 App::import('Core','File');
 
-class MediaserverComponent extends Object {
+class ScreenboxserverComponent extends Object {
 
     /**
      * @var string Component name
      */
-    var $name = "Mediaserver";
+    var $name = "Screenboxserver";
     
     /**
-     * @var object Mediaserver model object
+     * @var object Screenboxserver model object
      */
-    var $Mediaserver = null;
+    var $Screenboxserver = null;
     
     /**
      * @var array Load other components for use
@@ -65,10 +65,10 @@ class MediaserverComponent extends Object {
     /* ------------ Elements functions --------------------- */
     
     /**
-     *  getMediaserver
+     *  getScreenboxserver
      *  [Element method]
      *  
-     *  Mediaserver item view element method.
+     *  Screenboxserver item view element method.
      *  
      *  @params object Controller with components to shutdown
      *  @return array
@@ -77,10 +77,10 @@ class MediaserverComponent extends Object {
     	$data = $opt = array();
 		$box = null;
 		
-		$controller->loadModel('MediaBox');
+		$controller->loadModel('Screenbox');
 		$controller->loadModel('Medias');
-		$controller->loadModel('MediaBoxLog');
-		$controller->loadModel('MediaPlaytimeLog');
+		$controller->loadModel('ScreenboxLog');
+		$controller->loadModel('ScreenboxPlaytimeLog');
 		
 		// set id from elements custom properties or from route id (/1234_example.html)
 		if (!empty($controller->params['named']['box'])){
@@ -90,32 +90,32 @@ class MediaserverComponent extends Object {
 		if (!empty($box)){
 
 			$opt = array(
-				'conditions'=>array('MediaBox.key'=>"$box"),
-				'fields'=>array('MediaBox.id','MediaBox.name','MediaBox.company_id','MediaBox.width','MediaBox.height', 'MediaBox.public', 'MediaBox.config'),
+				'conditions'=>array('Screenbox.key'=>"$box"),
+				'fields'=>array('Screenbox.id','Screenbox.name','Screenbox.company_id','Screenbox.width','Screenbox.height', 'Screenbox.public', 'Screenbox.config'),
 				'recusive'=>3
 			);
 			
-			$controller->MediaBox->unbindUsers();
+			$controller->Screenbox->unbindUsers();
 			
-			$data = $controller->MediaBox->find('first', $opt);
+			$data = $controller->Screenbox->find('first', $opt);
 						
-			if (!empty($data['MediaBox']['company_id'])){
+			if (!empty($data['Screenbox']['company_id'])){
 				
 				// LogError(print_r($controller->data, true));
 				// log box status
-				if (!empty($controller->data['MediaBoxLog'])){
-					$controller->data['MediaBoxLog']['media_box_id'] = $data['MediaBox']['id'];
-					$controller->data['MediaBoxLog']['log_time'] = time(); 
-					$controller->MediaBoxLog->import($controller->data['MediaBoxLog']);
+				if (!empty($controller->data['ScreenboxLog'])){
+					$controller->data['ScreenboxLog']['screenbox_id'] = $data['Screenbox']['id'];
+					$controller->data['ScreenboxLog']['log_time'] = time(); 
+					$controller->ScreenboxLog->import($controller->data['ScreenboxLog']);
 				}
 				
 				// log media
-				if (!empty($controller->data['MediaPlaytimeLog'])){
-					$controller->MediaPlaytimeLog->import($controller->data['MediaPlaytimeLog'], $data['MediaBox']['id']);
+				if (!empty($controller->data['ScreenboxPlaytimeLog'])){
+					$controller->ScreenboxPlaytimeLog->import($controller->data['ScreenboxPlaytimeLog'], $data['Screenbox']['id']);
 				}
  				
 				$opt = array(
-					'conditions'=>array('Medias.company_id'=>$data['MediaBox']['company_id'],'Medias.public'=>1),
+					'conditions'=>array('Medias.company_id'=>$data['Screenbox']['company_id'],'Medias.public'=>1),
 					'recusive'=>2
 				);
 				
@@ -125,11 +125,11 @@ class MediaserverComponent extends Object {
 				$controller->Medias->bindModel(
 					array(
 						'hasMany' => array(
-							'MediaPlaytime' => array()
+							'ScreenboxPlaytime' => array()
 						),
 						'hasOne' => array(
 							'MediaFormat' => array(
-								'conditions'=> array('MediaFormat.ready'=>1, 'MediaFormat.media_box_id'=>$data['MediaBox']['id'])
+								'conditions'=> array('MediaFormat.ready'=>1, 'MediaFormat.screenbox_id'=>$data['Screenbox']['id'])
 							)
 						))
 				);
@@ -153,7 +153,7 @@ class MediaserverComponent extends Object {
 							// 'width' => $m['Medias']['width'],
 							// 'height' => $m['Medias']['height'],
 							// 'format' => $m['Medias']['format']
-							'MediaPlaytime' => $m['MediaPlaytime']
+							'ScreenboxPlaytime' => $m['ScreenboxPlaytime']
 						);
 					}
 				}
@@ -170,7 +170,7 @@ class MediaserverComponent extends Object {
 		
 		$data = array();
 		$controller->loadModel('MediaFormat');
-		$controller->loadModel('MediaBox');
+		$controller->loadModel('Screenbox');
 		$id = $box = null;
 		$error = true;
 		
@@ -184,17 +184,17 @@ class MediaserverComponent extends Object {
     	}
 
 		$opt = array(
-			'conditions'=>array('MediaBox.key'=>"$box","MediaBox.public"=>1),
-			'fields'=>array('MediaBox.id'),
+			'conditions'=>array('Screenbox.key'=>"$box","Screenbox.public"=>1),
+			'fields'=>array('Screenbox.id'),
 			'recusive'=>-1
 		);
 		
-		$controller->MediaBox->unbindUsers();
-		$result = $controller->MediaBox->find('first', $opt);
+		$controller->Screenbox->unbindUsers();
+		$result = $controller->Screenbox->find('first', $opt);
 		
-		if (!empty($result['MediaBox']['id']) && $id>0){
+		if (!empty($result['Screenbox']['id']) && $id>0){
 			$opt = array(
-				'conditions'=>array('MediaFormat.media_id'=>$id, 'MediaFormat.ready'=>1, 'MediaFormat.media_box_id'=>$result['MediaBox']['id']),
+				'conditions'=>array('MediaFormat.media_id'=>$id, 'MediaFormat.ready'=>1, 'MediaFormat.screenbox_id'=>$result['Screenbox']['id']),
 				'fields' => array('MediaFormat.id', 'MediaFormat.file_name'),
 				'recusive'=>-1
 			);	
@@ -278,7 +278,7 @@ class MediaserverComponent extends Object {
 		return $data;
 	}
 	
-	function getMediaBoxes(&$controller, &$element) {
+	function getScreenboxes(&$controller, &$element) {
 		$data = array();
 		$controller->loadModel('MiediaBox');
 		
@@ -298,15 +298,15 @@ class MediaserverComponent extends Object {
 		return $data;
 	}
 	
-	function getEditMediaBox(&$controller, &$element) {
+	function getEditScreenbox(&$controller, &$element) {
 		$data = array();
-		$controller->loadModel('MediaBox');
+		$controller->loadModel('Screenbox');
 		$id = 0;
 		if (!empty($controller->params['named']['id'])){
 			$id = intval($controller->params['named']['id']);
 		}
 		if ($id>0){
-			$data = $controller->MediaBox->findById($id);
+			$data = $controller->Screenbox->findById($id);
 		}
 		return $data;
 	}
@@ -389,9 +389,9 @@ class MediaserverComponent extends Object {
 	function getMakeStats(&$controller, $element = null){
 			
 		$controller->loadModel('Medias');
-		$controller->loadModel('MediaBox');	
-		$controller->loadModel('MediaBoxLog');
-		$controller->loadModel('MediaPlaytimeLog');
+		$controller->loadModel('Screenbox');	
+		$controller->loadModel('ScreenboxLog');
+		$controller->loadModel('ScreenboxPlaytimeLog');
 	
 		
 	} 
@@ -399,21 +399,22 @@ class MediaserverComponent extends Object {
     /* ------------ Admin functions --------------------- */
     
     /**
-     * admin_getMediaservers
+     * admin_getScreenboxservers
      * @param object $controller
      * @return array
      */
     function admin_getMedia(&$controller) {
     
+    /*
         // ACL list check for user permissions
-       	if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'read')) {
+       	if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'read')) {
         	return $controller->unAuth();
         }
-		
+	*/	
         $opt = array();
 		$controller->loadModel('Medias');
 		$controller->Medias->bindUsers();
-		$controller->Medias->bindCompany();
+		// $controller->Medias->bindCompany();
 		
 		// set limit for query
         $opt = $controller->Medias->setLimit($controller->params['form']);
@@ -434,32 +435,32 @@ class MediaserverComponent extends Object {
 		
 		// modify users info
         $data = $controller->Medias->itemUsers($data);
-		$data = $controller->Medias->itemCompany($data);
+		// $data = $controller->Medias->itemCompany($data);
 		
 		$data = Set::extract($data, '{n}.Medias');
 		
 		// extract only Media item, no other like users ets.
-		$data = array('Medias' => $data);
+		$data = array('Media' => $data);
 		// add counter
 		$data['count'] = $controller->Medias->find('count', array('conditions'=>$opt['conditions']));
 		 
         return $data;
     }
     /**
-     * admin_getMediaserverById
+     * admin_getScreenboxserverById
      * @param object $controller
      * @return array
      */
     function admin_getMediaById(&$controller) {
     	
         // ACL list check for user permissions
-        if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'read')) {
+        if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'read')) {
             return $controller->unAuth();
         }
 		
 		$controller->loadModel('Medias');
 		$controller->loadModel('MediaFormat');
-		$controller->loadModel('MediaPlaytime');
+		$controller->loadModel('ScreenboxPlaytime');
 		$id = intval($controller->params['form']['id']);
 		
         if ($id > 0) {
@@ -468,28 +469,28 @@ class MediaserverComponent extends Object {
 			$f = $controller->MediaFormat->find('all',
 				array('conditions' =>
 					array('MediaFormat.media_id'=>$id),
-				array('fields'=>'media_box_id')
+				array('fields'=>'screenbox_id')
 			));
 			if (!empty($f)){
-				$result['Medias']['boxes-tmp'] = join(',', (array) Set::extract('/MediaFormat/media_box_id', $f));
+				$result['Medias']['boxes-tmp'] = join(',', (array) Set::extract('/MediaFormat/screenbox_id', $f));
 			}
 			
 			/* play time */
-			$pt = $controller->MediaPlaytime->getFormated($id);
+			$pt = $controller->ScreenboxPlaytime->getFormated($id);
 			if (!empty($pt)){
 				$result['Medias']['playtime-tmp'] = join(',', $pt);
 			}
 			
 			/* play days */
-			$f = $controller->MediaPlaytime->find('all',
+			$f = $controller->ScreenboxPlaytime->find('all',
 				array(
-					'conditions' => array('MediaPlaytime.media_id'=>$id),
-					'fields'=>'MediaPlaytime.day',
-					'group'=>'MediaPlaytime.day',
-					'order' => 'MediaPlaytime.day ASC'
+					'conditions' => array('ScreenboxPlaytime.media_id'=>$id),
+					'fields'=>'ScreenboxPlaytime.day',
+					'group'=>'ScreenboxPlaytime.day',
+					'order' => 'ScreenboxPlaytime.day ASC'
 			));
 			if (!empty($f)){
-				$result['Medias']['days'] = join(',', (array) Set::extract('/MediaPlaytime/day', $f));
+				$result['Medias']['days'] = join(',', (array) Set::extract('/ScreenboxPlaytime/day', $f));
 			}
 			  
             return array('success'=>true, 'data'=>$result['Medias']);
@@ -501,7 +502,7 @@ class MediaserverComponent extends Object {
 	
 	
     /**
-     * admin_setMediaserver
+     * admin_setScreenboxserver
      * @param object $controller
      * @return array
      */
@@ -511,11 +512,11 @@ class MediaserverComponent extends Object {
 		
         // ACL list check for user permissions
         if (! empty($controller->params['form']['id'])) {
-            if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'update')) {
+            if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'update')) {
                 return $controller->unAuth();
             }
         } else {
-            if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'create')) {
+            if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'create')) {
                 return $controller->unAuth();
             }
         }
@@ -540,13 +541,13 @@ class MediaserverComponent extends Object {
     }
 
    /**
-     * admin_deleteMediaserver
+     * admin_deleteScreenboxserver
      * @param object $controller
      * @return array
      */
     function admin_deleteMedia(&$controller) {
         
-		if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'delete')){
+		if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'delete')){
             return $controller->unAuth();
         }
 		$controller->loadModel('Medias');
@@ -560,92 +561,96 @@ class MediaserverComponent extends Object {
     }
 
 /**
-     * admin_getMediaservers
+     * admin_getScreenboxservers
      * @param object $controller
      * @return array
      */
-    function admin_getMediaBoxes(&$controller) {
+    function admin_getScreenboxes(&$controller) {
     
+    /*
         // ACL list check for user permissions
-       	if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'read')) {
+       	if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'read')) {
         	return $controller->unAuth();
         }
+        */
 		
-		$controller->loadModel('MediaBox');
-		$controller->MediaBox->bindUsers();
-		$controller->MediaBox->bindCompany();
+		$controller->loadModel('Screenbox');
+		$controller->Screenbox->bindUsers();
+		// $controller->Screenbox->bindCompany();
         $opt = array();
 		
 		// set limit for query
-        $opt = $controller->MediaBox->setLimit($controller->params['form']);
+        $opt = $controller->Screenbox->setLimit($controller->params['form']);
         
 		// query search conditions
         if (!empty($controller->params['form']['q'])) {
-            $opt['conditions'] = array('lower(MediaBox.id) like'=>'%'.low($controller->params['form']['q']).'%');
+            $opt['conditions'] = array('lower(Screenbox.id) like'=>'%'.low($controller->params['form']['q']).'%');
         } else {
             $opt['conditions'] = array();
         }
 		
-		$controller->MediaBox->virtualFields['last_sync'] = '(SELECT log_time FROM media_box_logs  WHERE  media_box_id = MediaBox.id ORDER BY log_time DESC LIMIT 1)';
+		$controller->Screenbox->virtualFields['last_sync'] = '(SELECT log_time FROM screenbox_logs  WHERE  screenbox_id = Screenbox.id ORDER BY log_time DESC LIMIT 1)';
         
 		// find query
-        $data = $controller->MediaBox->find('all', $opt);
+        $data = $controller->Screenbox->find('all', $opt);
 		
 		// modify users info
-        $data = $controller->MediaBox->itemUsers($data);
-		$data = $controller->MediaBox->itemCompany($data);
+        $data = $controller->Screenbox->itemUsers($data);
+		//$data = $controller->Screenbox->itemCompany($data);
         
-		// extract only MediaBox item, no other like users ets.
-		$data = array('MediaBox' => Set::extract($data, '{n}.MediaBox'));
+		// extract only Screenbox item, no other like users ets.
+		$data = array('Screenbox' => Set::extract($data, '{n}.Screenbox'));
 		// add counter
-		$data['count'] = $controller->MediaBox->find('count', array('conditions'=>$opt['conditions']));
+		$data['count'] = $controller->Screenbox->find('count', array('conditions'=>$opt['conditions']));
 		 
         return $data;
     }
     /**
-     * admin_getMediaserverById
+     * admin_getScreenboxserverById
      * @param object $controller
      * @return array
      */
-    function admin_getMediaBoxById(&$controller) {
+    function admin_getScreenboxById(&$controller) {
     	
+    	/*
         // ACL list check for user permissions
-        if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'read')) {
+        if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'read')) {
             return $controller->unAuth();
         }
-		
-		$controller->loadModel('MediaBox');
+		*/
+
+		$controller->loadModel('Screenbox');
 		
         if ($controller->params['form']['id'] > 0) {
-            $result = $controller->MediaBox->findById(intval($controller->params['form']['id']));
-            
-            return array('success'=>true, 'data'=>$result['MediaBox']);
+            $result = $controller->Screenbox->findById(intval($controller->params['form']['id']));
+            $controller->data = $result;
+            return array('success'=>true, 'Screenbox'=>$result['Screenbox']);
         } else {
             return array('success'=>false);
         }
     }
 	
     /**
-     * admin_setMediaserver
+     * admin_setScreenboxserver
      * @param object $controller
      * @return array
      */
-    function admin_setMediaBox(&$controller) {
+    function admin_setScreenbox(&$controller) {
         
 		$out = array('succes'=>false, 'msg'=>__('There was an error saving data to server...', true));
 		
         // ACL list check for user permissions
         if (! empty($controller->params['form']['id'])) {
-            if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'update')) {
+            if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'update')) {
                 return $controller->unAuth();
             }
         } else {
-            if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'create')) {
+            if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'create')) {
                 return $controller->unAuth();
             }
         }
 		
-		$controller->loadModel('MediaBox');
+		$controller->loadModel('Screenbox');
         $out = array('succes'=>false, 'errorMessage'=>__('There was an error saving data to server...', true));
         $tableId = 0;
 		
@@ -656,8 +661,8 @@ class MediaserverComponent extends Object {
         // save data
         if (!empty($controller->params['form']['id']) || isset($controller->params['form']['company_id'])) {
             // save data
-            if ($controller->MediaBox->save($controller->params['form'])) {
-            	 $tableId = empty($controller->params['form']['id']) ? $controller->MediaBox->getLastInsertId() : $controller->params['form']['id'];
+            if ($controller->Screenbox->save($controller->params['form'])) {
+            	 $tableId = empty($controller->params['form']['id']) ? $controller->Screenbox->getLastInsertId() : $controller->params['form']['id'];
 				
                 // return out with new id
                 $out = array('success'=>true, 'id'=>$tableId);
@@ -667,44 +672,44 @@ class MediaserverComponent extends Object {
     }
 	
     /**
-     * admin_deleteMediaserver
+     * admin_deleteScreenboxserver
      * @param object $controller
      * @return array
      */
-    function admin_deleteMediaBox(&$controller) {
+    function admin_deleteScreenbox(&$controller) {
         
-		if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'delete')){
+		if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'delete')){
             return $controller->unAuth();
         }
         $out = array('success'=>false);
         $id = intval($controller->params['form']['id']);
-		$controller->loadModel('MediaBox');
+		$controller->loadModel('Screenbox');
 		
         if ($id > 0) {
-            $out['success'] = $controller->MediaBox->delete($id, true);
+            $out['success'] = $controller->Screenbox->delete($id, true);
         }
         return $out;
     }
 
 
 	/**
-     * admin_getMediaserverById
+     * admin_getScreenboxserverById
      * @param object $controller
      * @return array
      */
     function admin_getCompanyBoxes(&$controller) {
     	
         // ACL list check for user permissions
-        if (!$controller->isAuthorized('Controllers/Admin/Mediaserver', 'read')) {
+        if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'read')) {
             return $controller->unAuth();
         }
 		
-		$controller->loadModel('MediaBox');
+		$controller->loadModel('Screenbox');
 		
         if ($controller->params['form']['company_id'] > 0) {
-            $result = $controller->MediaBox->getByCompany($controller->params['form']['company_id'], array('id','name'));
-			$result = Set::classicExtract( $result, '{n}.MediaBox');
-			// $result = array('MediaBoxes'=>$result);
+            $result = $controller->Screenbox->getByCompany($controller->params['form']['company_id'], array('id','name'));
+			$result = Set::classicExtract( $result, '{n}.Screenbox');
+			// $result = array('Screenboxes'=>$result);
             return array('success'=>true, 'data'=> $result,'count'=>1);
         } else {
             return array('success'=>false);

@@ -44,12 +44,13 @@ class AppController extends Controller {
 		$this->Auth->logoutRedirect = array('controller' => 'context', 'action' => 'index');
 		$this->Auth->authError = __("Sorry, you are lacking access!", true);
 		$this->Auth->loginError = __("Login or Password was incorrectly entered!", true);
-				
+		*/
+
 		$this->set('meta_for_layout', Configure::read('Domain.metaForLayout'));
 		$this->set('css_for_layout', Configure::read('Domain.cssForLayout'));
 		$this->set('header_content', Configure::read('Domain.headerContent'));
 		$this->set('footer_content', Configure::read('Domain.footerContent'));		
-		*/
+		
 	}
 	
 	/**

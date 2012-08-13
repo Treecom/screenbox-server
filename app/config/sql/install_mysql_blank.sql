@@ -1,23 +1,4 @@
--- phpMyAdmin SQL Dump
--- version 3.3.8
--- http://www.phpmyadmin.net
---
--- Hostiteľ: localhost:3306
--- Vygenerované:: 08.Aug, 2012 - 21:52
--- Verzia serveru: 5.1.63
--- Verzia PHP: 5.3.5-1ubuntu7.10
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
---
--- Databáza: `screenboxs`
---
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `acos`
---
 
 CREATE TABLE IF NOT EXISTS `acos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -32,17 +13,6 @@ CREATE TABLE IF NOT EXISTS `acos` (
   KEY `foreign_key` (`foreign_key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `acos`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `aros`
---
-
 CREATE TABLE IF NOT EXISTS `aros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
@@ -56,17 +26,6 @@ CREATE TABLE IF NOT EXISTS `aros` (
   KEY `foreign_key` (`foreign_key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `aros`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `aros_acos`
---
-
 CREATE TABLE IF NOT EXISTS `aros_acos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `aro_id` int(11) DEFAULT NULL,
@@ -77,17 +36,6 @@ CREATE TABLE IF NOT EXISTS `aros_acos` (
   `_delete` char(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Sťahujem dáta pre tabuľku `aros_acos`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `companies`
---
 
 CREATE TABLE IF NOT EXISTS `companies` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -128,17 +76,6 @@ CREATE TABLE IF NOT EXISTS `companies` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `companies`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `company_users`
---
-
 CREATE TABLE IF NOT EXISTS `company_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
@@ -146,17 +83,6 @@ CREATE TABLE IF NOT EXISTS `company_users` (
   `owner` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Sťahujem dáta pre tabuľku `company_users`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `files`
---
 
 CREATE TABLE IF NOT EXISTS `files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -176,17 +102,6 @@ CREATE TABLE IF NOT EXISTS `files` (
   KEY `extension` (`extension`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `files`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `files_relations`
---
-
 CREATE TABLE IF NOT EXISTS `files_relations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `file_id` int(11) NOT NULL,
@@ -196,17 +111,6 @@ CREATE TABLE IF NOT EXISTS `files_relations` (
   KEY `file_id` (`file_id`),
   KEY `table` (`table`,`table_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Sťahujem dáta pre tabuľku `files_relations`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `i18n`
---
 
 CREATE TABLE IF NOT EXISTS `i18n` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -218,17 +122,6 @@ CREATE TABLE IF NOT EXISTS `i18n` (
   PRIMARY KEY (`id`),
   KEY `locale` (`locale`,`model`,`foreign_key`,`field`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Sťahujem dáta pre tabuľku `i18n`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `medias`
---
 
 CREATE TABLE IF NOT EXISTS `medias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -250,17 +143,6 @@ CREATE TABLE IF NOT EXISTS `medias` (
   KEY `company_id` (`company_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `medias`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `media_formats`
---
-
 CREATE TABLE IF NOT EXISTS `media_formats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `media_id` int(11) DEFAULT NULL,
@@ -274,17 +156,6 @@ CREATE TABLE IF NOT EXISTS `media_formats` (
   `downloaded` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Sťahujem dáta pre tabuľku `media_formats`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `screenboxes`
---
 
 CREATE TABLE IF NOT EXISTS `screenboxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -312,17 +183,6 @@ CREATE TABLE IF NOT EXISTS `screenboxes` (
   KEY `company_id` (`company_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `screenboxes`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `screenbox_logs`
---
-
 CREATE TABLE IF NOT EXISTS `screenbox_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `screenbox_id` int(11) NOT NULL,
@@ -344,17 +204,6 @@ CREATE TABLE IF NOT EXISTS `screenbox_logs` (
   KEY `screenbox_id` (`screenbox_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `screenbox_logs`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `screenbox_playtimes`
---
-
 CREATE TABLE IF NOT EXISTS `screenbox_playtimes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `media_id` int(11) DEFAULT NULL,
@@ -365,17 +214,6 @@ CREATE TABLE IF NOT EXISTS `screenbox_playtimes` (
   KEY `media_id` (`media_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `screenbox_playtimes`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `screenbox_playtime_logs`
---
-
 CREATE TABLE IF NOT EXISTS `screenbox_playtime_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `media_id` int(11) DEFAULT NULL,
@@ -385,17 +223,6 @@ CREATE TABLE IF NOT EXISTS `screenbox_playtime_logs` (
   KEY `media_id` (`media_id`),
   KEY `screenbox_id` (`screenbox_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Sťahujem dáta pre tabuľku `screenbox_playtime_logs`
---
-
-
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `users`
---
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -410,7 +237,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Sťahujem dáta pre tabuľku `users`
---
+CREATE TABLE IF NOT EXISTS `user_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  `active` tinyint(1) DEFAULT '1',
+  `created_user_id` int(11) DEFAULT NULL,
+  `created_time` int(11) DEFAULT NULL,
+  `modefied_user_id` int(11) DEFAULT NULL,
+  `modified_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `user_groups_relations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `created_user_id` int(11) DEFAULT NULL,
+  `created_time` int(11) DEFAULT NULL,
+  `modified_user_id` int(11) DEFAULT NULL,
+  `modified_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

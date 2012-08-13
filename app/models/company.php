@@ -6,7 +6,7 @@
  * Companies data.
  * 
  * @author Martin Bucko, Treecom s.r.o. (bucko at treecom dot net)
- * @copyright Copyright 2009 - OneClick s.r.o., 2010 - 2011 Treecom s.r.o.
+ * @copyright Copyright (c) 2011 Treecom s.r.o.
  */
 
 class Company extends AppModel {

@@ -24,13 +24,15 @@ class ScreenboxController extends AppController {
 	var $components = array(
 			'Cookie',
 			'RequestHandler',
-		//	'Json'
+			'User',
+			'Screenboxserver',
 	);  
 
 	/**
 	 * @var array default helpers
 	 */
 	var $helpers = array(
+			'Form',
 			'Cache',
 			'Time', 
 			'Number', 			
@@ -60,8 +62,8 @@ class ScreenboxController extends AppController {
 	var $cacheAction = array(
  		// 'index'  => array('callbacks' => false, 'duration' => 48000)
 	);
- 	
- 	var $uses = array();
+	
+	var $uses = array();
 
 	/**
 	 * beforeFilter
@@ -107,54 +109,211 @@ class ScreenboxController extends AppController {
 	 * 
 	 * [action]
 	 * 
-	 * ...
+	 * Boxes managment
 	 * 
 	 * @return void 
 	 */
-	function boxes(){
-	 
+	function boxes($go = null, $id = null, $value = null){	 	
+	 	$data = array();
+	 	$data = $this->Screenboxserver->admin_getScreenboxes($this);
+	 	
+	 	fb($data);
+	 	
+	 	$this->set('data', $data);
      }
  
+
+ 	/**
+	 * box
+	 * 
+	 * [action]
+	 * 
+	 * Box add/edit
+	 * 
+	 * @return void 
+	 */
+	function box($id = null){	 	
+	 	 
+	 	$this->loadModel('Company');
+
+		$data = array();
+ 		$data['Companies']  = $this->Company->find('list'); 		
+
+ 		if (!empty($this->data['Screenbox'])){
+ 			$this->params['form']  = $this->data['Screenbox'];
+ 			$data = am($data, $this->Screenboxserver->admin_setScreenbox($this));
+ 		}  
+
+ 		if (!empty($id)){
+ 			$this->params['form']['id']  = $id;
+ 			$data = $this->Screenboxserver->admin_getScreenboxById($this);
+ 			$data['success'] = null;
+ 		}
+
+ 		fb($data);
+ 	 
+ 		$this->set('data', $data);
+     }
 
  	/**
 	 * media
 	 * 
 	 * [action]
 	 * 
-	 * Site index method action. This is main (and entry) action for web.
+	 * Media managment
 	 * 
 	 * @return void 
 	 */
-	function media(){
+	function media($go = null, $id = null, $value = null){
+	 	$data = array();
+	 	$data = $this->Screenboxserver->admin_getMedia($this);
+	 	
+	 	fb($data);
+	 	
+	 	$this->set('data', $data);
+    }
+
+    /**
+	 * medium
+	 * 
+	 * [action]
+	 * 
+	 * Add/Edit medium
+	 * 
+	 * @return void 
+	 */
+	function medium($id){
 	 
-     }
+	 	$this->loadModel('Company');
+
+		$data = array();
+ 		$data['Companies']  = $this->Company->find('list'); 		
+
+ 		if (!empty($this->data['Media'])){
+ 			$this->params['form']  = $this->data['Media'];
+ 			$data = am($data, $this->Screenboxserver->admin_setMedia($this));
+ 		}  
+
+ 		if (!empty($id)){
+ 			$this->params['form']['id']  = $id;
+ 			$data = $this->Screenboxserver->admin_getMediaById($this);
+ 			$data['success'] = null;
+ 		}
+
+ 		fb($data);
+ 	 
+ 		$this->set('data', $data);
+    }
  
  	/**
 	 * stats
 	 * 
 	 * [action]
 	 * 
-	 * Site index method action. This is main (and entry) action for web.
+	 * Stats page.
 	 * 
 	 * @return void 
 	 */
 	function stats(){
  
-     }
+    }
  
  	/**
 	 * users
 	 * 
 	 * [action]
 	 * 
-	 * Site index method action. This is main (and entry) action for web.
+	 * Users managment.
 	 * 
 	 * @return void 
 	 */
-	function users(){
+	function users($on = null, $id = null, $val = null){ 		 		
+ 		
+
+		if ($on=="delete"){
+			$this->params['form']['id'] = $id;
+			$this->User->admin_deleteUser($this);
+			$this->readirect('/users');
+		}
+
+ 		$data = $this->User->admin_getUsers($this);	
+ 		
+ 		fb($data);
+
+ 		$this->set('data', $data);
+    }
+
+    /**
+	 * users_add
+	 * 
+	 * [action]
+	 * 
+	 * Users managment.
+	 * 
+	 * @return void 
+	 */
+	function user($id = null){ 		 		
+ 		
+ 		$this->loadModel('UserGroup');
+
+		$data = array();
+ 		$data['UserGroup']  = $this->UserGroup->find('list'); 		
+
+ 		if (!empty($this->data['User'])){
+ 			$this->params['form']  = $this->data['User'];
+ 			$data = am($data, $this->User->admin_editUser($this));
+ 		}  
+
+ 		if (!empty($id)){
+ 			$this->params['form']['id']  = $id;
+ 			$data = $this->User->admin_getUserById($this);
+ 			$data['success'] = null;
+ 		}
+
+ 		fb($data);
+ 	 
+ 		$this->set('data', $data);
+    }
  
-     }
- 
+ 	/**
+	 * user_groups
+	 * 
+	 * [action]
+	 * 
+	 * User groups listing.
+	 * 
+	 * @return void 
+	 */
+	function user_groups(){
+	 
+    }
+
+    /**
+	 * user_groups
+	 * 
+	 * [action]
+	 * 
+	 * Add/Edit user group/
+	 * 
+	 * @return void 
+	 */
+	function user_group(){
+	 
+    }
+
+    /**
+	 * user_rights
+	 * 
+	 * [action]
+	 * 
+	 * ADD DESC!
+	 * 
+	 * @return void 
+	 */
+	function user_rights(){
+	 
+    }
+
  	/**
 	 * settings
 	 * 
@@ -166,18 +325,36 @@ class ScreenboxController extends AppController {
 	 */
 	function settings(){
 	 
-     }
+    }
  
  	/**
 	 * login
 	 * 
 	 * [action]
 	 * 
-	 * Site index method action. This is main (and entry) action for web.
+	 * Login and logut action.
 	 * 
 	 * @return void 
 	 */
 	function login($out = false){
 		
-     }
+    }
+
+
+     /**
+	 * install
+	 * 
+	 * [action]
+	 * 
+	 * Install action
+	 * 
+	 * @return void 
+	 */
+	function install($out = false){
+		
+    }
+
+    function isAuthorized($a = null, $b=null){
+    	return true;
+    }
 }
