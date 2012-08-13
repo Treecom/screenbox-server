@@ -9,7 +9,7 @@
 </header>
 
  
-<div class="screenbox-form">
+<div class="medium-form">
 
 <?php if (isset($data['success']) && $data['success']==true): ?>
 <div class="alert alert-success">
@@ -20,13 +20,36 @@
 
 <?php 
 
+	$days = array(
+		"1" => __("Monday", true),
+		"2" => __("Tuesday", true),
+		"3" => __("Wednesday", true),
+		"4" => __("Thursday", true),
+		"5" => __("Friday", true),
+		"6" => __("Saturday", true),
+		"7" => __("Sunday", true)		
+	);
+
+	$hours = array();
+	for ($i=0; $i < 24; $i++) { 		
+		$hours[$i] = $i . ":00 - " .($i+1).":00";
+	}
+
 	echo $form->create('Media', array('url'=>'/medium/', 'class' => 'form-horizontal well'));
 	echo $form->hidden('Media.id');
-	
-	echo $form->input('Media.company_id',  array('label'=> __('Company', true)));	
+	 
+	echo $form->input('Media.name',  array('label'=> __('Media name', true)));
+	echo $form->input('Media.company_id',  array('label'=> __('From company', true), 'options' => $data['Companies']));	
 
-	echo $form->input('Media.name',  array('label'=> __('Name', true)));
-	echo $form->input('Media.priority',  array('label'=> __('Priority', true)));
+	echo $form->input('Media.priority',  array('label'=> __('Priority (0-9999)', true)));
+
+	echo $form->input('Media.file',  array('label'=> __('Media file', true), 'type'=> 'file'));
+
+	echo $form->input('Media.screenboxes',  array('label'=> __('Play in Screenboxes', true), 'type'=>'select','multiple'=>'true', 'options'=>$data['Screenboxes']));	
+
+	echo $form->input('Media.days',  array('label'=> __('Play in days', true), 'type'=>'select','multiple'=>'true', 'options'=>$days));	
+
+	echo $form->input('Media.hours',  array('label'=> __('Play in hours', true), 'type'=>'select','multiple'=>'true', 'options'=>$hours));	
 
 	echo $form->input('Media.play', array('type'=>'checkbox', 'label'=> __('Play', true)));
 	echo $form->input('Media.public', array('type'=>'checkbox', 'label'=> __('Public', true)));
@@ -36,9 +59,4 @@
 ?>
 </div>
  
-<script type="text/javascript">
-// bootstrap workarounds
-$('.error-message').addClass('label label-important');
-$('.input').addClass('control-group');
-$(".alert").alert()
-</script>
+ 

@@ -14,8 +14,8 @@
     <?php foreach((array)$data['Screenbox'] as $line): ?>
     <tr>
 		<td>
-			<i href="#" class="edit icon-edit" title="<?php __('Edit') ?>"> </i>			
-			<i href="#" class="delete icon-remove" title="<?php __('Delete') ?>"> </i>
+			<i href="#" class="edit icon-edit" title="<?php __('Edit') ?>" data-id="<?php echo $line['id']?>"> </i>			
+			<i href="#" class="delete icon-remove" title="<?php __('Delete') ?>"  data-id="<?php echo $line['id']?>"> </i>
 		</td>
 		<td class="tt" title="<?php echo strip_tags($line['description']) ?>"><?php echo $line['name'] ?></td>
 		<td><?php echo $line['city'] .', '. $line['street'] ?></td>

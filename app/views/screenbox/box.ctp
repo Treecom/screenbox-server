@@ -23,7 +23,7 @@
 	echo $form->create('Screenbox', array('url'=>'/box', 'class' => 'form-horizontal well'));
 	echo $form->hidden('Screenbox.id');
 	
-	echo $form->input('Screenbox.company_id',  array('label'=> __('Company', true)));	
+	echo $form->input('Screenbox.company_id',  array('label'=> __('Company', true), 'options'=>$data['Companies']));
 
 	echo $form->input('Screenbox.name',  array('label'=> __('Name', true)));
 	echo $form->input('Screenbox.description',  array('label'=> __('Description', true)));
@@ -45,10 +45,3 @@
 	echo $form->end();
 ?>
 </div>
- 
-<script type="text/javascript">
-// bootstrap workarounds
-$('.error-message').addClass('label label-important');
-$('.input').addClass('control-group');
-$(".alert").alert()
-</script>

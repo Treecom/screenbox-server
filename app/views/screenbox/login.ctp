@@ -10,7 +10,8 @@
     echo $form->create("User",array('url'=>'/login'));
     echo $form->input("User.email");
     echo $form->input("User.password");
-    echo $form->end(__("Login",true));
+    echo $form->button('<span class="icon-save"></span> '. __('Login', true), array('class' => 'btn btn-primary'));
+    echo $form->end(null);
 
 ?>
 </div>

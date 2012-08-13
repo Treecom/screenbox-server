@@ -46,14 +46,14 @@ class ScreenboxController extends AppController {
 	
 	
 	/**
-	 * @var string view template/action (default index)
+	 * @var string default view template name
 	 */ 
-	//var $viewName = 'default';
+	var $viewName = null;
 	
 	/**
 	 * @var string pageTitle
 	 */
-	var $pageTitle = 'Untitled';
+	var $pageTitle = 'Screenbox Server';
 	
 	
 	/**
@@ -77,7 +77,7 @@ class ScreenboxController extends AppController {
   		// ! Security warning ! 
 		// Here yo can describe site public methods/actions to run it without authentication!
 		// Other methods require authentication by default
-		//$this->Auth->allowedActions = array('index','login', 'user_activation'); 	
+		$this->Auth->allowedActions = array('index','login', 'user_activation'); 	
 	}
  
 	/**
@@ -115,7 +115,30 @@ class ScreenboxController extends AppController {
 	 */
 	function boxes($go = null, $id = null, $value = null){	 	
 	 	$data = array();
-	 	$data = $this->Screenboxserver->admin_getScreenboxes($this);
+	 	
+	 	
+	 	if ($on=="delete"){
+			$this->params['form']['id'] = intval($id);
+			$this->Screenboxserver->admin_deleteScreenbox($this);
+			$this->Session->setFlash(__('Screenbox succesfuly removed!', true));
+			$this->redirect('/boxes/', null, true);
+		}
+
+		if ($on=="active"){
+			$this->params['form']['id'] = intval($id);
+			$this->params['form']['active'] = intval($val)==1 ? 1 : 0;
+			$status = $this->Screenboxserver->admin_setScreenbox($this);
+			fb($status);
+			if (intval($val)==1){
+				$this->Session->setFlash(__('Screenbox succesfuly activated!', true));
+			} else {
+				$this->Session->setFlash(__('Screenbox are deactivated!', true));
+			}
+			$this->redirect('/boxes/', null, true);
+		 }
+
+		
+		$data = $this->Screenboxserver->admin_getScreenboxes($this);
 	 	
 	 	fb($data);
 	 	
@@ -135,9 +158,9 @@ class ScreenboxController extends AppController {
 	function box($id = null){	 	
 	 	 
 	 	$this->loadModel('Company');
-
+	 	
 		$data = array();
- 		$data['Companies']  = $this->Company->find('list'); 		
+ 		
 
  		if (!empty($this->data['Screenbox'])){
  			$this->params['form']  = $this->data['Screenbox'];
@@ -149,6 +172,8 @@ class ScreenboxController extends AppController {
  			$data = $this->Screenboxserver->admin_getScreenboxById($this);
  			$data['success'] = null;
  		}
+
+		$data['Companies']  = $this->Company->find('list');
 
  		fb($data);
  	 
@@ -182,12 +207,13 @@ class ScreenboxController extends AppController {
 	 * 
 	 * @return void 
 	 */
-	function medium($id){
+	function medium($id = null){
 	 
+	 	$this->loadModel('Screenbox');
 	 	$this->loadModel('Company');
 
 		$data = array();
- 		$data['Companies']  = $this->Company->find('list'); 		
+ 		
 
  		if (!empty($this->data['Media'])){
  			$this->params['form']  = $this->data['Media'];
@@ -199,6 +225,9 @@ class ScreenboxController extends AppController {
  			$data = $this->Screenboxserver->admin_getMediaById($this);
  			$data['success'] = null;
  		}
+
+ 		$data['Companies']  = $this->Company->find('list'); 	
+ 		$data['Screenboxes']  = $this->Screenbox->find('list'); 			
 
  		fb($data);
  	 
@@ -231,10 +260,24 @@ class ScreenboxController extends AppController {
  		
 
 		if ($on=="delete"){
-			$this->params['form']['id'] = $id;
+			$this->params['form']['id'] = intval($id);
 			$this->User->admin_deleteUser($this);
-			$this->readirect('/users');
+			$this->Session->setFlash(__('User succesfuly deleted!', true));
+			$this->redirect('/users/', null, true);
 		}
+
+		if ($on=="active"){
+			$this->params['form']['id'] = intval($id);
+			$this->params['form']['active'] = intval($val)==1 ? 1 : 0;
+			$status = $this->User->admin_editUser($this);
+			fb($status);
+			if (intval($val)==1){
+				$this->Session->setFlash(__('User succesfuly activated!', true));
+			} else {
+				$this->Session->setFlash(__('User are deactivated!', true));
+			}
+			$this->redirect('/users/', null, true);
+		 }
 
  		$data = $this->User->admin_getUsers($this);	
  		
@@ -257,7 +300,7 @@ class ScreenboxController extends AppController {
  		$this->loadModel('UserGroup');
 
 		$data = array();
- 		$data['UserGroup']  = $this->UserGroup->find('list'); 		
+ 		 		
 
  		if (!empty($this->data['User'])){
  			$this->params['form']  = $this->data['User'];
@@ -267,6 +310,65 @@ class ScreenboxController extends AppController {
  		if (!empty($id)){
  			$this->params['form']['id']  = $id;
  			$data = $this->User->admin_getUserById($this);
+ 			$data['success'] = null;
+ 		}
+
+		$data['UserGroup']  = $this->UserGroup->find('list');
+
+ 		fb($data);
+ 	 
+ 		$this->set('data', $data);
+    }
+
+
+    /**
+	 * companies
+	 * 
+	 * [action]
+	 * 
+	 * Companies managment.
+	 * 
+	 * @return void 
+	 */
+	function companies($on = null, $id = null, $val = null){ 		 		
+ 		
+
+		if ($on=="delete"){
+			$this->params['form']['id'] = intval($id);
+			$this->User->admin_deleteCompany($this);
+			$this->Session->setFlash(__('Company succesfuly deleted!', true));
+			$this->redirect('/companies/', null, true);
+		}
+
+	 
+ 		$data = $this->User->admin_getCompanies($this);	
+ 		
+ 		fb($data);
+
+ 		$this->set('data', $data);
+    }
+
+    /**
+	 * company
+	 * 
+	 * [action]
+	 * 
+	 * Company edit/add.
+	 * 
+	 * @return void 
+	 */
+	function company($id = null){ 		 		
+ 		
+		$data = array();
+
+ 		if (!empty($this->data['Company'])){
+ 			$this->params['form']  = $this->data['Company'];
+ 			$data = am($data, $this->User->admin_editCompany($this));
+ 		}  
+
+ 		if (!empty($id)){
+ 			$this->params['form']['id']  = $id;
+ 			$data = $this->User->admin_getCompanyById($this);
  			$data['success'] = null;
  		}
 
@@ -284,8 +386,23 @@ class ScreenboxController extends AppController {
 	 * 
 	 * @return void 
 	 */
-	function user_groups(){
-	 
+	function user_groups($on = null, $id = null, $value = null){
+	  
+
+		 if ($on=="delete"){
+			$this->params['form']['id'] = $id;
+			$this->User->admin_deleteGroup($this);	
+			$this->Session->setFlash(__('Users group succesfuly deleted!', true));
+			$this->redirect('/user_groups/');
+		}
+
+		 
+
+ 		$data = $this->User->admin_getGroups($this);	
+ 		
+ 		fb($data);
+
+ 		$this->set('data', $data);
     }
 
     /**
@@ -297,8 +414,24 @@ class ScreenboxController extends AppController {
 	 * 
 	 * @return void 
 	 */
-	function user_group(){
-	 
+	function user_group($id = null){
+	 	$data = array();
+ 	 		
+
+ 		if (!empty($this->data['UserGroup'])){
+ 			$this->params['form']  = $this->data['UserGroup'];
+ 			$data = am($data, $this->User->admin_editGroup($this));
+ 		}  
+
+ 		if (!empty($id)){
+ 			$this->params['form']['id']  = $id;
+ 			$data = $this->User->admin_getGroupById($this);
+ 			$data['success'] = null;
+ 		}
+
+ 		fb($data);
+ 	 
+ 		$this->set('data', $data);
     }
 
     /**
@@ -337,7 +470,9 @@ class ScreenboxController extends AppController {
 	 * @return void 
 	 */
 	function login($out = false){
-		
+		if ($out=="off"){
+			$this->Auth->logout();
+		}
     }
 
 

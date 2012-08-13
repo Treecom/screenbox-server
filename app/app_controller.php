@@ -19,7 +19,7 @@ class AppController extends Controller {
 	/**
 	 * @var array App Components
 	 */
-	var $components = array('Session');
+	var $components = array('Session','Auth');
 	
 	/**
 	 * @var array App Halpers
@@ -34,23 +34,20 @@ class AppController extends Controller {
 	function beforeFilter(){	
 	
 		parent::beforeFilter();
-		
-		/*
+		 
 		$this->Auth->authenticate = ClassRegistry::init('User');		
 		$this->Auth->fields = array('username' => 'email', 'password' => 'password');
 	 	$this->Auth->userScope = array('User.active' => 1);
-		$this->Auth->loginAction = array('controller' => 'context', 'action' => 'login');
-		$this->Auth->loginRedirect = array('controller' => 'context', 'action' => 'index');
-		$this->Auth->logoutRedirect = array('controller' => 'context', 'action' => 'index');
+		$this->Auth->loginAction = array('controller' => 'screenbox', 'action' => 'login');
+		$this->Auth->loginRedirect = array('controller' => 'screenbox', 'action' => 'index');
+		$this->Auth->logoutRedirect = array('controller' => 'screenbox', 'action' => 'index');
 		$this->Auth->authError = __("Sorry, you are lacking access!", true);
 		$this->Auth->loginError = __("Login or Password was incorrectly entered!", true);
-		*/
-
+	 
 		$this->set('meta_for_layout', Configure::read('Domain.metaForLayout'));
 		$this->set('css_for_layout', Configure::read('Domain.cssForLayout'));
 		$this->set('header_content', Configure::read('Domain.headerContent'));
-		$this->set('footer_content', Configure::read('Domain.footerContent'));		
-		
+		$this->set('footer_content', Configure::read('Domain.footerContent'));	
 	}
 	
 	/**

@@ -349,7 +349,7 @@ class UserComponent extends Object {
 	 * @return array
 	 */
 	function admin_editUser(&$controller){
-/*
+
 		if (!empty($controller->params['form']['id'])){
 			if (!$controller->isAuthorized('Controllers/Admin/User','update')){
 				return $controller->unAuth();
@@ -359,7 +359,7 @@ class UserComponent extends Object {
 				return $controller->unAuth();
 			}
 		}
-		*/
+	
   		$logout = false;		
 		$out = array('success'=>false);
  		$controller->loadModel('User');
@@ -371,7 +371,7 @@ class UserComponent extends Object {
 		// change user aro
 		// @todo not finished when moved to other group!
 		if (!empty($controller->params['form']['id']) && !empty($controller->params['form']['email'])){
-			if ($controller->params['form']['id']>0){
+			if ($controller->params['form']['id']>0 && false){
 				$aro =& $controller->Acl->Aro;				
 				$data = $aro->find('first',array('conditions'=>array('foreign_key'=>intval($controller->params['form']['id']),'model'=>'User')));
 				if (!empty($data['Aro']['id'])) {    
@@ -433,7 +433,8 @@ class UserComponent extends Object {
 			$controller->loadModel('UserGroup');
 			$result = $controller->UserGroup->findById($id);
 			if (!empty($result['UserGroup'])){
- 				return array('success'=>true,'data'=>$result['UserGroup']);
+				$controller->data['UserGroup'] = $result['UserGroup'];
+ 				return array('success'=>true,'UserGroup'=>$result['UserGroup']);
 			} 
 		}
 	}
@@ -460,11 +461,14 @@ class UserComponent extends Object {
 	 */
 	function admin_getGroups(&$controller){
 		$controller->loadModel('UserGroup');
-		$controller->UserGroup->bindUsers();
+	//	$controller->UserGroup->bindUsers();
 		
-		$limit = $controller->params['form']['limit']>0 ? $controller->params['form']['limit'] : 30;
-		$start = $controller->params['form']['start']>0 ? $controller->params['form']['start'] : 0;
-    	$opt = array('limit'=>$limit,'offset'=>$start);
+		
+    	$opt = array();
+
+    	// set limit for query
+        $opt = $controller->UserGroup->setLimit($controller->params['form']);
+
 		$opt['conditions'] = array();		
 		if (!empty($controller->params['form']['q'])){
 			// @todo more parameters to search ...
@@ -947,9 +951,10 @@ class UserComponent extends Object {
 			// modify users info
         	$data = $controller->Company->itemUsers($data);
 			$data = $data['Company']; 
+			$controller->data['Company'] = $data;	
         }
 		 
-        return array('success' => !empty($data), 'data' => (array) $data);
+        return array('success' => !empty($data), 'Company' => (array) $data);
     }
 	
 	 /**

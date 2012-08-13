@@ -5,6 +5,8 @@
 
 
 <div class="users-list">
+<div id="users-rights-tree">
+</div>
 <table class="table table-bordered">
     <tr>
 		<th width="32"> </th>
@@ -25,7 +27,7 @@
 </table>
 </div>
 
-
+<script type="text/javascript" src="/js/jquery.jstree.js"></script>  
 <script type="text/javascript">
 	$('.edit,.delete').css('cursor','pointer').tooltip({'placement':'right'});
 	$('.edit').on('click', function(e){

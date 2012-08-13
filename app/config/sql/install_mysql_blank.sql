@@ -259,3 +259,13 @@ CREATE TABLE IF NOT EXISTS `user_groups_relations` (
   `modified_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+
+
+INSERT INTO `user_groups` (`id`, `name`, `description`, `active`, `created_user_id`, `created_time`, `modefied_user_id`, `modified_time`) VALUES
+(1, 'Administrators', 'Administrators group have full rights to everything.', 1, 1, 1344878961, 1, 1344878961),
+(2, 'Resellers', 'Resellers accounts. Resellers can manage one or more comapanies. Can add new managers, users and companies. Have full rights to manage media.', 1, 1, 1344878565, 1, 1344878885),
+(3, 'Managers', 'Managers can manage all data belongs to his comapany. Can all so add normal users.', 1, 1, 1344878627, 1, 1344879037),
+(4, 'Users', 'Normal users can add new media and can view his media stats.', 1, 1, 1344878659, 1, 1344879182);
+

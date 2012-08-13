@@ -24,7 +24,7 @@ class Screenbox extends AppModel {
 	 * Model display field
 	 * @var string
 	 */
- 	var $displayField = 'id';
+ 	var $displayField = 'name';
 	
 	/**
 	 * @var string (or array) The column name(s) and direction(s) to order find results by default.

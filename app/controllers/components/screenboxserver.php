@@ -492,7 +492,7 @@ class ScreenboxserverComponent extends Object {
 			if (!empty($f)){
 				$result['Medias']['days'] = join(',', (array) Set::extract('/ScreenboxPlaytime/day', $f));
 			}
-			  
+			$controller->data['Media']  = $result['Medias'];
             return array('success'=>true, 'data'=>$result['Medias']);
         } else {
             return array('success'=>false);
