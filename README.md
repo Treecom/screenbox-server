@@ -30,6 +30,7 @@ Third part software an resurces used in this project:
  - jQuery http://jquery.com
  - Twitter bootstrap http://twitter.github.com/bootstrap
  - jQuery UI Bootstrap http://addyosmani.github.com/jquery-ui-bootstrap
+ - Bootstrap theme by http://bootswatch.com
  - Font Awesome http://fortawesome.github.com/Font-Awesome
 
 Project site: http://www.screenbox.org
