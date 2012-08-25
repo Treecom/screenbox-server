@@ -195,7 +195,7 @@
  * characters."
  * @link http://php.net/session_name
  */
-	Configure::write('Session.cookie', 'UPDATE');
+	Configure::write('Session.cookie', 'SCREENBOX');
 
 /**
  * Session time out time (in seconds).

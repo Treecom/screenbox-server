@@ -17,15 +17,16 @@ if(!function_exists('fb')) {
     function fb() {
 		$debug = Configure::read('debug');
 		if ($debug>0) {	
-			//ob_start();			 
+			ob_start();			 
 			$instance = FirePHP::getInstance(true);
 			$args = func_get_args();
-			return call_user_func_array(array($instance, 'fb'), $args);
+            return call_user_func_array(array($instance, 'fb'), $args);
 		} else {
 			return true;
 		}
 	} 
-} 
+}
+
 class FirePHPDebugger extends Debugger { 
 
 /** 

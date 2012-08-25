@@ -74,7 +74,7 @@
 class DATABASE_CONFIG {
 
 	var $default = array(
-		'driver' => 'postgres',
+		'driver' => 'mysqli',
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => '_USER_',
@@ -84,12 +84,12 @@ class DATABASE_CONFIG {
 	);
 
 	var $test = array(
-		'driver' => 'postgres',
+		'driver' => 'mysqli',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'postgres',
-		'password' => 'postgres',
-		'database' => 'update_test',
+		'login' => '',
+		'password' => '',
+		'database' => '',
 		'prefix' => '',
 	);
 }

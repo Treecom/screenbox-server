@@ -74,10 +74,12 @@ class ScreenboxController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
+		fb('Here');
+		
   		// ! Security warning ! 
 		// Here yo can describe site public methods/actions to run it without authentication!
 		// Other methods require authentication by default
-		$this->Auth->allowedActions = array('index','login', 'user_activation'); 	
+		$this->Auth->allowedActions = array('login', 'user_activation'); 	
 	}
  
 	/**

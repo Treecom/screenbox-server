@@ -50,13 +50,14 @@
  *
  */
 	if (!defined('CAKE_CORE_INCLUDE_PATH')) {
-		// uncomment if cake is shared 
+		// comment out if cake is not shared
 		if(DS=='/'){
-			define('CAKE_CORE_INCLUDE_PATH', '/usr/share/php/cake-1.3.8');
+			define('CAKE_CORE_INCLUDE_PATH', '/usr/share/php/cake-1.3.8/');
 		} else {
-			define('CAKE_CORE_INCLUDE_PATH', 'D:\\www\www\update-dev');
+			define('CAKE_CORE_INCLUDE_PATH', 'C:\\www\www\cakephp');
 		}
-		//define('CAKE_CORE_INCLUDE_PATH', ROOT);
+		// uncomment if cake is not shared
+		// define('CAKE_CORE_INCLUDE_PATH', ROOT);
 	}
 
 /**

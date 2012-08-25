@@ -60,6 +60,7 @@ if (Configure::read('firePhpDebug')===true){
 	// DebugKit.FireCake
 	// App::import('Vendor', 'DebugKit.FireCake');
 }
+/*
 if(!function_exists('fb')) { 
     function fb($var = false, $label = null){
     	if (function_exists('firecake')){
@@ -68,6 +69,7 @@ if(!function_exists('fb')) {
 		return true;
 	}
 }
+*/
 
 /**
  * Domain Config
