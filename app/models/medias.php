@@ -103,6 +103,13 @@ class Medias extends AppModel {
 		// see app_model.php
 		$this->addCUTime();
 		$this->cleanFields($this, array('name'));
+
+		if (!empty($this->data['Medias']['file_id'])){
+			if(is_array($this->data['Medias']['file_id']) && !empty($this->data['Medias']['file_id']['FileStore']['id'])){
+	 			$this->data['Medias']['file_id'] = intval($this->data['Medias']['file_id']['FileStore']['id']);
+	 		}
+ 		}
+
 		return true;
 	}
 	
@@ -113,9 +120,10 @@ class Medias extends AppModel {
 	function beforeSave(){
 		
 		if (!empty($this->data['Medias']['file_id'])){
+			
 		//	$FileStore = Classregistry::init('FileStore');
 		//	$file = $FileStore->findById($this->data['Medias']['file_id']);
- 		}
+ 		}  
 		
 		return true;
 	}
@@ -132,10 +140,11 @@ class Medias extends AppModel {
 			$id = $this->getLastInsertId();
 		}
 		
-		$MediaBox = Classregistry::init('Screenbox');
-		$MediaPlaytime = Classregistry::init('ScreenboxPlaytime');
+		$Screenbox = Classregistry::init('Screenbox');
+		$ScreenboxPlaytime = Classregistry::init('ScreenboxPlaytime');
 		$Format = Classregistry::init('MediaFormat');
 		$Fs = Classregistry::init('FileStore');
+		$playtimes = $days = '';
 		
 		if (empty($this->data['Medias']['convert'])){
 			$this->data['Medias']['convert'] = 1;
@@ -209,8 +218,10 @@ class Medias extends AppModel {
 
 		// save playtime
 		if ((!empty($playtimes) || !empty($days)) && $id>0){
-			$pts = explode(',', $playtimes);
-			$days = explode(',', $days);
+
+
+			$pts = is_array($playtimes) ? $playtimes : explode(',', $playtimes);
+			$days = is_array($days) ? $days : explode(',', $days);
 			$ScreenboxPlaytime->deleteAll(array('media_id'=>$id));
 			$ptf = $ScreenboxPlaytime->getPlaytimeFormat();
 			// @todo: pridat prazdny cas ak bol zadany iba den! tj od 00:00 do 24:00 ~ alebo zohladnit v selete playlistu...
@@ -227,7 +238,7 @@ class Medias extends AppModel {
 						$in = $ptf[$pt];
 					}
 					
-					$MediaPlaytime->create();
+					$ScreenboxPlaytime->create();
 					$data = array(
 								'media_id' => $id,
 								'time_from' => isset($in[1]) ? $in[1] : 0,

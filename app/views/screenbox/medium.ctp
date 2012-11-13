@@ -35,7 +35,11 @@
 		$hours[$i] = $i . ":00 - " .($i+1).":00";
 	}
 
-	echo $form->create('Media', array('url'=>'/medium/', 'class' => 'form-horizontal well'));
+	echo $form->create('Media', array(
+		'url'=>'/medium/', 
+		'class' => 'form-horizontal well',
+		'type' => 'file'
+		));
 	echo $form->hidden('Media.id');
 	 
 	echo $form->input('Media.name',  array('label'=> __('Media name', true)));

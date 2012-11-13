@@ -40,7 +40,7 @@
 			window.location = '/media/delete/'+id;
 		}
 	});
-	$('.delete').on('click', function(e){
+	$('.public').on('click', function(e){
 		var id = $(this).attr('data-id');
 		if (id>0){
 			window.location = '/media/public/'+id;

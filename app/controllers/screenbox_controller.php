@@ -74,7 +74,7 @@ class ScreenboxController extends AppController {
 	function beforeFilter(){
 		parent::beforeFilter();
 		
-		fb('Here');
+		fb('Screenbox Server - DEBUG IS ENABLED!');
 		
   		// ! Security warning ! 
 		// Here yo can describe site public methods/actions to run it without authentication!
@@ -193,6 +193,13 @@ class ScreenboxController extends AppController {
 	 */
 	function media($go = null, $id = null, $value = null){
 	 	$data = array();
+
+
+	 	if ($go==="delete"){
+	 		$this->params['form']['id'] = $id;
+	 		$this->Screenboxserver->admin_deleteMedia($this);
+	 	}
+
 	 	$data = $this->Screenboxserver->admin_getMedia($this);
 	 	
 	 	fb($data);
@@ -218,6 +225,8 @@ class ScreenboxController extends AppController {
  		
 
  		if (!empty($this->data['Media'])){
+ 			// fb($this->form);
+ 			// fb($this->data);
  			$this->params['form']  = $this->data['Media'];
  			$data = am($data, $this->Screenboxserver->admin_setMedia($this));
  		}  
