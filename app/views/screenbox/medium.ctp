@@ -1,3 +1,9 @@
+<?php
+
+if (!isset($data['Media'])) $data['Media'] = $data['data'];
+
+?>
+
 <header class="jumbotron subhead" id="overview">
 <?php if(!empty($data['Media']['id'])): ?>
   <h1><?php __("Edit Media") ?></h1>
@@ -36,7 +42,7 @@
 	}
 
 	echo $form->create('Media', array(
-		'url'=>'/medium/', 
+		'url'=>'/medium/' . (isset($data['Media']['id']) ? $data['Media']['id'] : ''), 
 		'class' => 'form-horizontal well',
 		'type' => 'file'
 		));
@@ -47,7 +53,10 @@
 
 	echo $form->input('Media.priority',  array('label'=> __('Priority (0-9999)', true)));
 
-	echo $form->input('Media.file',  array('label'=> __('Media file', true), 'type'=> 'file'));
+	//old: echo $form->input('Media.file',  array('label'=> __('Media file', true), 'type'=> 'file'));
+
+	$bt = $form->button('<span class="icon icon-file"></span> '. __('Pick', true), array('class' => 'files btn', 'type' => 'button'));
+	echo $form->input('Media.file_id',  array('label'=> __('Media file', true), 'type'=>'text', 'after' => $bt));
 
 	echo $form->input('Media.screenboxes',  array('label'=> __('Play in Screenboxes', true), 'type'=>'select','multiple'=>'true', 'options'=>$data['Screenboxes']));	
 

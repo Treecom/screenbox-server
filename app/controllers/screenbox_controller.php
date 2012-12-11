@@ -26,6 +26,7 @@ class ScreenboxController extends AppController {
 			'RequestHandler',
 			'User',
 			'Screenboxserver',
+			'File'
 	);  
 
 	/**
@@ -485,6 +486,21 @@ class ScreenboxController extends AppController {
 			$this->Auth->logout();
 		}
     }
+
+
+	/**
+	 * files
+	 * 
+	 * [action]
+	 * 
+	 * Files browser
+	 * 
+	 * @return void 
+	 */
+	function files($out = false){
+		 $this->layout = "empty";
+		 $this->set('data', $this->File->admin_getFiles($this));
+	}
 
 
      /**
