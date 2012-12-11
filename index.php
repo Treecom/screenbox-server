@@ -26,7 +26,6 @@
  */
 	// uncomment if cake is shared 
 	define('CAKE_CORE_INCLUDE_PATH', '/usr/share/php/cake-1.3.8');
-	// define('CAKE_CORE_INCLUDE_PATH', 'D:\\www\www\update-dev');
 	define('APP_DIR', 'app');
 	define('DS', DIRECTORY_SEPARATOR);
 	define('ROOT', dirname(__FILE__));

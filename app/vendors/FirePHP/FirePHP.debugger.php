@@ -15,9 +15,10 @@ if(!class_exists('FirePHP')) {
 } 
 if(!function_exists('fb')) { 
     function fb() {
+
 		$debug = Configure::read('debug');
-		if ($debug>0) {	
-			//ob_start();			 
+		if ($debug>0) {	            
+			ob_start();			 
 			$instance = FirePHP::getInstance(true);
 			$args = func_get_args();
 			return call_user_func_array(array($instance, 'fb'), $args);
@@ -195,7 +196,7 @@ class FirePHPDebugger extends Debugger {
             $data = join($data); 
         } 
         $data = strip_tags($data); 
-      //   $data =  str_ireplace("\t", '&nbsp;&nbsp;', str_ireplace("\n", '<br />', $data)) ; 
+        $data =  str_ireplace("\t", '&nbsp;&nbsp;', str_ireplace("\n", '<br />', $data)) ; 
         return $data; 
     } 
 } 

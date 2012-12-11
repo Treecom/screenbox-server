@@ -132,8 +132,8 @@ class Medias extends AppModel {
 			$id = $this->getLastInsertId();
 		}
 		
-		$MediaBox = Classregistry::init('Screenbox');
-		$MediaPlaytime = Classregistry::init('ScreenboxPlaytime');
+		$Screenbox = Classregistry::init('Screenbox');
+		$ScreenboxPlaytime = Classregistry::init('ScreenboxPlaytime');
 		$Format = Classregistry::init('MediaFormat');
 		$Fs = Classregistry::init('FileStore');
 		
@@ -227,7 +227,7 @@ class Medias extends AppModel {
 						$in = $ptf[$pt];
 					}
 					
-					$MediaPlaytime->create();
+					$ScreenboxPlaytime->create();
 					$data = array(
 								'media_id' => $id,
 								'time_from' => isset($in[1]) ? $in[1] : 0,

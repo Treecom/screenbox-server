@@ -36,7 +36,7 @@ class ScreenboxController extends AppController {
 			'Cache',
 			'Time', 
 			'Number', 			
-			// 'Firecake' (Problems with session in Firecake)
+		//	'Firecake' // (Problems with session in Firecake)
 	); 
 	
 	/**
