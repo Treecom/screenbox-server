@@ -51,7 +51,7 @@ class UploadBehavior extends ModelBehavior {
 		'thumbnailQuality' => 75, // Global Thumbnail Quality
 		'maxDimension' => 'w', // Can be null, h, or w
 		'useImageMagick' => true,
-		'imageMagickPath' => null,
+		// 'imageMagickPath' => null,
 		'imageMagickPath' => '/usr/bin/convert', // Path to imageMagick on your server
 		// 'imageMagickPath' => 'c:/Program Files/ImageMagick/convert.exe', // Path to imageMagick on your server
 		'ffmpegthumb' =>true,
@@ -934,8 +934,6 @@ class UploadBehavior extends ModelBehavior {
 		$targetImage = explode(".", $target);
 		unset($targetImage[(count($targetImage)-1)]);
 		$target = join ('.', $targetImage) . '.jpg';
- 		
- 		error_log('here 0');
 	
 		if (class_exists('ffmpeg_movie') && $this->defaultOptions['phpffmpeg']){
 			if (!is_object($movieClass)){

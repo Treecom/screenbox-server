@@ -190,7 +190,7 @@ Configure::write('Domain.thumbSizes', array(
  */
 Configure::write('Domain.filesGroups', array(
 					'image' => 'jpg,jpe,jpeg,gif,bmp,png',
-					'video' => 'avi,mpg,mpe,mpeg,mp4,mov,flv,qt,ram,ra,rm,mkv',
+					'video' => 'avi,mpg,mpe,mpeg,mp4,mov,flv,qt,ram,ra,rm,mkv,3gp',
 					'audio' => 'au,wav,mp2,mp3,mpga,ogg,aac,mid,midi',
 					'archive' => 'zip,rar,7z,bz2,tar,gtar,gzip',
 					'text' => 'txt,js,css,html,htm,xml,ini,ctp,tpl,rtf',

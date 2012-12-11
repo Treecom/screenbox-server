@@ -397,6 +397,44 @@ class ScreenboxserverComponent extends Object {
 	} 
 	
     /* ------------ Admin functions --------------------- */
+
+    	/**
+	 * admin_upload
+	 * Upload one file from admin. Data is parsed from POST in $controller->params['form']['Filedata']. Return 1 if successfull or 0 if not.
+	 * @param object $controller
+	 * @return 
+	 */
+	function upload(&$controller, &$element = null) {
+ 		$data = array();
+		if (!empty($controller->params['form']['file'])){
+			$controller->loadModel('FileStore');					
+			$contextId = empty($controller->params['form']['context_id']) ? 0 : intval($controller->params['form']['context_id']);
+			$file['FileStore'] = $controller->params['form']['file'];		
+			$file['FileStore']['file_name'] = $file['FileStore']; // must be array!		
+			$file['FileStore']['context_id'] = $contextId;
+		
+			$controller->FileStore->create();
+			if ($controller->FileStore->save($file)){
+				// save Context File Relation 
+				$id = $controller->FileStore->getInsertId();
+				if ($contextId>0 && $id>0){
+					$controller->loadModel('ContextCpRelation');
+					$controller->ContextCpRelation->makeRelation($contextId, 'files', $id);
+				}
+				
+				if ($id>0){
+					return $controller->FileStore->read(null, $id);
+				} 
+	 		}
+			
+			if (!empty($controller->FileStore->validationErrors)){
+				LogError('Error on File::upload:' . print_r($controller->FileStore->validationErrors,true));
+			}
+		}
+ 			
+		return $data;
+	}
+
     
     /**
      * admin_getScreenboxservers
@@ -509,7 +547,7 @@ class ScreenboxserverComponent extends Object {
     function admin_setMedia(&$controller) {
         
 		$out = array('succes'=>false, 'msg'=>__('There was an error saving data to server...', true));
-		
+		/*
         // ACL list check for user permissions
         if (! empty($controller->params['form']['id'])) {
             if (!$controller->isAuthorized('Controllers/Admin/Screenboxserver', 'update')) {
@@ -520,13 +558,17 @@ class ScreenboxserverComponent extends Object {
                 return $controller->unAuth();
             }
         }
-		
+		*/
+
 		$controller->loadModel('Medias');
         $out = array('succes'=>false, 'errorMessage'=>__('There was an error saving data to server...', true));
         $tableId = 0;
         // save data
         if (!empty($controller->params['form']['id']) || isset($controller->params['form']['name'])) {
         	
+        	if (!empty($controller->params['form']['file']['name'])){
+         		$controller->params['form']['file_id'] = $this->upload($controller);
+         	}
 			if (isset($controller->params['form']['public_from_time']) && empty($controller->params['form']['public_from_time'])) $controller->params['form']['public_from_time'] = null;
 			if (isset($controller->params['form']['public_to_time']) && empty($controller->params['form']['public_to_time'])) $controller->params['form']['public_to_time'] = null; 
 			

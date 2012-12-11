@@ -269,3 +269,7 @@ INSERT INTO `user_groups` (`id`, `name`, `description`, `active`, `created_user_
 (3, 'Managers', 'Managers can manage all data belongs to his comapany. Can all so add normal users.', 1, 1, 1344878627, 1, 1344879037),
 (4, 'Users', 'Normal users can add new media and can view his media stats.', 1, 1, 1344878659, 1, 1344879182);
 
+-- Password set to 1111 for user admin@screenbox.org
+-- Please change email, name and password after first login!
+INSERT INTO `users` (`id`, `email`, `password`, `first_name`, `last_name`, `user_group_id`, `active`, `alias`, `timezone`) VALUES
+(1, 'admin@screenbox.org', 'dccf14a4de48c17d2df37ce64cbcc6c7483ffe62', 'Server', 'Administrator', 1, 1, NULL, NULL);

@@ -26,6 +26,11 @@
  */
 	// uncomment if cake is shared 
 	define('CAKE_CORE_INCLUDE_PATH', '/usr/share/php/cake-1.3.8');
+<<<<<<< HEAD
+=======
+	// define('CAKE_CORE_INCLUDE_PATH', '/usr/share/php/cakephp');
+	
+>>>>>>> e119fecfdd897b6b227402f2d98899cb1e759aff
 	define('APP_DIR', 'app');
 	define('DS', DIRECTORY_SEPARATOR);
 	define('ROOT', dirname(__FILE__));

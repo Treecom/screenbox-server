@@ -1,8 +1,11 @@
-ScreenBox Server
-================
+ScreenBox DSS - Server
+======================
 
-Open source automated digital signage (or video advertising) network server.
+Screenbox is opensource system developed to support Digital Signage and digital advertising. Digital Signage System (DSS) consists of two applications: Screenbox Client and Screenbox Server ie. a controlling server and client "player". The server is used to create campaigns, edit media, convert to a format suitable for each client separately, and also to create playlists to target individual clients. Clients connected to the internet are automatically receiving/downloading server assigned playlists and related media at regular intervals.
 
+Project site: http://www.screenbox.org
+
+ScreenBox Client: https://github.com/Treecom/screenbox 
 
 Project is under havy development all informations comming soon!
 
@@ -30,9 +33,9 @@ Third part software an resurces used in this project:
  - jQuery http://jquery.com
  - Twitter bootstrap http://twitter.github.com/bootstrap
  - jQuery UI Bootstrap http://addyosmani.github.com/jquery-ui-bootstrap
+ - Bootstrap theme by http://bootswatch.com
  - Font Awesome http://fortawesome.github.com/Font-Awesome
 
-Project site: http://www.screenbox.org
 
 UNDER MIT LICENSE:
 https://raw.github.com/Treecom/screenbox-server/master/app/LICENSE.txt

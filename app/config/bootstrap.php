@@ -60,7 +60,21 @@ if (Configure::read('firePhpDebug')===true){
 	// DebugKit.FireCake
 	// App::import('Vendor', 'DebugKit.FireCake');
 }
+<<<<<<< HEAD
  
+=======
+/*
+if(!function_exists('fb')) { 
+    function fb($var = false, $label = null){
+    	if (function_exists('firecake')){
+    		firecake($var);
+    	}
+		return true;
+	}
+}
+*/
+
+>>>>>>> e119fecfdd897b6b227402f2d98899cb1e759aff
 /**
  * Domain Config
  * load domain default configuration file from /config/domain.php

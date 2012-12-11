@@ -761,6 +761,9 @@ class FileStore extends AppModel {
 		}
  			
 		if (empty($file['FileStore']['properties'])){ // only for create
+
+			$file['FileStore']['properties'] = array();
+
  			if (!empty($file['FileStore']['extension'])){
 				$ext = $file['FileStore']['extension'];
 			} else {
